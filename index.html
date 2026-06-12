@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>幻境冒險者 - 雲端線上版角色收集圖鑑</title>
+    <title>幻境冒險者 - 二次元角色收集圖鑑</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome 圖示庫 -->
@@ -92,17 +92,24 @@
                 <!-- 連線狀態徽章與統計 -->
                 <div class="bg-anime-card/80 px-4 py-2 rounded-xl border border-gray-800 text-xs flex gap-4 items-center">
                     <div class="flex items-center gap-1.5">
-                        <span id="sync-status-dot" class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-                        <span id="sync-status-text">連線中...</span>
+                        <span id="sync-status-dot" class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-ping"></span>
+                        <span id="sync-status-text">初始化中</span>
                     </div>
                     <!-- 雲端總收集統計 -->
-                    <div class="border-l border-gray-700 pl-4">總雲端收藏：<span id="stat-total" class="font-bold text-anime-accent text-sm">0</span></div>
-                    <!-- 新增：SSR(6★) 雲端收藏統計 -->
+                    <div class="border-l border-gray-700 pl-4">總收藏：<span id="stat-total" class="font-bold text-anime-accent text-sm">0</span></div>
+                    <!-- SSR(6★) 雲端收藏統計 -->
                     <div class="border-l border-gray-700 pl-4">SSR(6★)：<span id="stat-ssr" class="font-bold text-anime-gold text-sm">0</span></div>
                 </div>
-                <button onclick="openAddModal()" class="flex-1 sm:flex-none bg-gradient-to-r from-anime-accent to-anime-pink hover:opacity-90 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition-all active:scale-95 text-sm">
-                    <i class="fa-solid fa-circle-plus"></i> 新增角色
-                </button>
+                
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <!-- 雲端設定齒輪按鈕 -->
+                    <button onclick="openCloudConfigModal()" title="雲端資料庫設定" class="bg-gray-800/80 hover:bg-gray-700 text-gray-300 w-11 h-11 rounded-xl flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-gear text-lg"></i>
+                    </button>
+                    <button onclick="openAddModal()" class="flex-1 bg-gradient-to-r from-anime-accent to-anime-pink hover:opacity-90 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition-all active:scale-95 text-sm">
+                        <i class="fa-solid fa-circle-plus"></i> 新增角色
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
@@ -118,7 +125,7 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" id="search-input" oninput="filterCharacters()" placeholder="搜尋雲端角色名稱、稱號、標籤或故事..." class="w-full bg-anime-darker border border-gray-700 rounded-xl py-3 pl-10 pr-4 text-sm text-gray-200 focus:outline-none focus:border-anime-accent transition-colors">
+                    <input type="text" id="search-input" oninput="filterCharacters()" placeholder="搜尋角色名稱、稱號、標籤或故事..." class="w-full bg-anime-darker border border-gray-700 rounded-xl py-3 pl-10 pr-4 text-sm text-gray-200 focus:outline-none focus:border-anime-accent transition-colors">
                 </div>
                 <!-- 屬性元素篩選 -->
                 <div>
@@ -190,12 +197,12 @@
             <!-- 查無資料時顯示 -->
             <div id="no-characters" class="hidden flex-col items-center justify-center py-20 text-center">
                 <div class="w-24 h-24 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-500 mb-4 text-3xl">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <i class="fa-solid fa-images"></i>
                 </div>
-                <h3 class="text-lg font-bold text-gray-300">雲端圖鑑尚未建立資料</h3>
-                <p class="text-sm text-gray-500 mt-1">您可以點擊「新增角色」或立刻載入一組精美的推薦範例至雲端！</p>
+                <h3 class="text-lg font-bold text-gray-300">圖鑑尚未建立資料</h3>
+                <p class="text-sm text-gray-500 mt-1">您可以點擊「新增角色」或立刻載入一組精美的推薦範例！</p>
                 <button onclick="seedCloudDemoData()" class="mt-4 text-xs text-anime-accent hover:underline flex items-center gap-1 mx-auto bg-anime-accent/10 px-4 py-2 rounded-xl border border-anime-accent/30 hover:bg-anime-accent/20 transition-all">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> 一鍵寫入官方範例至雲端庫
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> 一鍵寫入官方範例
                 </button>
             </div>
 
@@ -216,7 +223,7 @@
             
             <div class="p-6 md:p-8">
                 <h2 id="modal-title" class="text-xl font-bold bg-gradient-to-r from-anime-accent to-anime-pink bg-clip-text text-transparent mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> 新增雲端角色
+                    <i class="fa-solid fa-cloud-arrow-up"></i> 新增角色
                 </h2>
 
                 <form id="char-form" onsubmit="saveCharacter(event)" class="space-y-6">
@@ -329,7 +336,7 @@
                             取消
                         </button>
                         <button type="submit" class="flex-1 bg-gradient-to-r from-anime-accent to-anime-pink hover:opacity-90 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-indigo-500/20">
-                            寫入雲端圖鑑
+                            儲存角色
                         </button>
                     </div>
                 </form>
@@ -378,7 +385,7 @@
                         <div class="space-y-3">
                             <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">冒險者傳記 (Biography)</h4>
                             <p id="detail-bio" class="text-sm text-gray-300 leading-relaxed max-h-[180px] overflow-y-auto pr-2">
-                                正在讀取雲端卷軸故事中...
+                                正在讀取卷軸故事中...
                             </p>
                         </div>
                     </div>
@@ -386,13 +393,73 @@
                     <!-- 功能按鈕 -->
                     <div class="flex gap-3 mt-8 pt-6 border-t border-gray-800/80">
                         <button id="btn-edit" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all">
-                            <i class="fa-solid fa-pen-to-square"></i> 編輯雲端檔案
+                            <i class="fa-solid fa-pen-to-square"></i> 編輯檔案
                         </button>
                         <button id="btn-delete" class="flex-1 bg-red-950/40 hover:bg-red-900/40 border border-red-800/60 text-red-400 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all">
                             <i class="fa-solid fa-trash"></i> 遣返角色 (刪除)
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 【雲端設定對話視窗 (Cloud Config Modal)】 -->
+    <div id="cloud-config-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-anime-card border border-gray-800 rounded-3xl w-full max-w-lg shadow-2xl relative p-6 md:p-8">
+            <button onclick="closeCloudConfigModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white w-8 h-8 rounded-full bg-anime-darker flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-cloud text-anime-accent animate-pulse"></i> 雲端資料庫連接設定
+            </h3>
+            <p class="text-xs text-gray-400 mb-6 leading-relaxed">
+                要在您自己的手機或個人託管空間同步角色，請在下方貼上您自定義的 Firebase 專案 SDK 配置代碼 (JSON 物件)。
+            </p>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[11px] text-gray-400 mb-1.5 uppercase tracking-wider">Firebase Config JSON 代碼</label>
+                    <textarea id="firebase-json-input" rows="8" placeholder='例如：
+{
+  "apiKey": "AIzaSy...",
+  "authDomain": "your-app.firebaseapp.com",
+  "projectId": "your-app",
+  "storageBucket": "your-app.appspot.com",
+  "messagingSenderId": "...",
+  "appId": "..."
+}' class="w-full bg-anime-darker border border-gray-700 rounded-xl p-3 text-xs text-gray-300 font-mono focus:outline-none focus:border-anime-accent"></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button onclick="clearCustomCloudConfig()" class="bg-red-950/40 hover:bg-red-900/40 border border-red-800/40 text-red-400 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all">
+                        重設為本地
+                    </button>
+                    <button onclick="saveCustomCloudConfig()" class="flex-1 bg-gradient-to-r from-anime-accent to-anime-pink text-white py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-indigo-500/20">
+                        確認保存並重啟連線
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 【客製化確定刪除彈窗 (Custom Confirm Delete Modal)】 -->
+    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-anime-card border border-gray-800 rounded-3xl w-full max-w-sm shadow-2xl relative p-6 text-center">
+            <div class="w-16 h-16 bg-red-950/50 text-red-400 border border-red-800/30 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl animate-bounce">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="text-base font-bold text-white mb-2">確立要遣返角色嗎？</h3>
+            <p id="delete-confirm-text" class="text-xs text-gray-400 px-2 leading-relaxed mb-6">正在確認遣返行動...</p>
+            
+            <div class="flex gap-3">
+                <button onclick="closeDeleteConfirmModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 py-2.5 rounded-xl text-xs font-bold transition-all">
+                    取消
+                </button>
+                <button onclick="executeDelete()" class="flex-1 bg-red-600 hover:bg-red-500 text-white py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-red-500/10">
+                    確認遣返
+                </button>
             </div>
         </div>
     </div>
@@ -414,41 +481,40 @@
         // ==========================================
         // 【雲端金鑰容錯保護安全鎖】
         // ==========================================
-        let firebaseConfig = {};
+        let firebaseConfig = null;
+        let isOfflineMode = false;
         
-        // 如果外部有注入 __firebase_config 則直接載入，若無，則採用一組官方預設設定以確保永不崩潰！
+        // 優先讀取使用者手動在畫面上保存的雲端金鑰，其次讀取預設環境配置
         try {
-            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+            const savedCustomConfig = localStorage.getItem('user_firebase_config_data');
+            if (savedCustomConfig) {
+                firebaseConfig = JSON.parse(savedCustomConfig);
+            } else if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                 firebaseConfig = JSON.parse(__firebase_config);
-            } else {
-                // 回退預備配置，避免未配置環境時崩潰
-                firebaseConfig = {
-                    apiKey: "AIzaSyDummyKeyForInitializationOnly",
-                    authDomain: "anime-cloud-gallery.firebaseapp.com",
-                    projectId: "anime-cloud-gallery",
-                    storageBucket: "anime-cloud-gallery.appspot.com",
-                    messagingSenderId: "1234567890",
-                    appId: "1:1234567890:web:mockappid"
-                };
             }
         } catch (e) {
-            console.error("解析 Firebase 配置時發生錯誤，改為本機預備環境：", e);
-            firebaseConfig = { apiKey: "mock" };
+            console.error("解析 Firebase 配置時發生錯誤：", e);
+        }
+
+        // 如果完全沒有提供任何合法的金鑰，立刻無感切換至「離線本機模式」
+        if (!firebaseConfig || firebaseConfig.apiKey === "AIzaSyDummyKeyForInitializationOnly" || !firebaseConfig.apiKey) {
+            isOfflineMode = true;
         }
 
         // 初始化 Firebase 核心組件
-        let app, auth, db;
-        let isOfflineMode = false;
+        let app = null, auth = null, db = null;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'anime-cloud-gallery';
         const apiKey = ""; // 運作時提供的安全 key
 
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-        } catch (e) {
-            console.error("Firebase 初始化遭遇錯誤，強制轉換至離線本機儲存模式", e);
-            isOfflineMode = true;
+        if (!isOfflineMode) {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+            } catch (e) {
+                console.error("Firebase 初始化失敗，自動切換至離線模式", e);
+                isOfflineMode = true;
+            }
         }
 
         // 全域核心狀態
@@ -457,10 +523,12 @@
         let currentSelectedImg = '';
         let activeFilterTag = '';
         let currentUser = null;
+        let pendingDeleteId = null; // 待刪除之角色ID
 
         // 預設精緻角色立繪範本
         const demoCharacters = [
             {
+                id: "demo-1",
                 name: "星詠之巫女 · 神樂",
                 title: "星穹神殿首席守護者",
                 element: "光",
@@ -470,6 +538,7 @@
                 bio: "自小在星穹神殿長大的神樂，擁有讀懂星辰運作軌跡的不可思議能力。她手中的星曜法杖據說是用隕落的核心水晶打造而成，能在夜空中劃出美麗而致命的極光軌跡，治癒盟友的同時粉碎所有深淵魔物。"
             },
             {
+                id: "demo-2",
                 name: "燼火狂刃 · 亞修",
                 title: "烈焰重劍傭兵團長",
                 element: "火",
@@ -479,6 +548,7 @@
                 bio: "在最殘酷的熔岩火山地淬煉重劍長達十年，亞修只追求與強者的宿命對決。雖然外表狂妄粗獷，但內心卻恪守著傭兵獨特的榮耀。戰鬥時，重劍燃燒起的熊熊烈焰能將敵人的意志瞬間吞噬殆盡。"
             },
             {
+                id: "demo-3",
                 name: "深海潮汐 · 艾露亞",
                 title: "幻海歌姬",
                 element: "水",
@@ -488,6 +558,7 @@
                 bio: "艾露亞的歌聲擁有平息暴風雨的深海魔力。她是海域的守護精靈，當迷途船隻遭遇滔天海難時，她溫柔的海洋旋律會為大家撥開重霧、指引歸途。在戰鬥中，她的高音能化作極為堅固的潮汐波瀾。"
             },
             {
+                id: "demo-4",
                 name: "迅影獵手 · 凱莉",
                 title: "微風之息暗影刺客",
                 element: "風",
@@ -498,7 +569,7 @@
             }
         ];
 
-        // 連線逾時機制：如果 8 秒後仍然處於「連線中」，主動開啟離線引導按鈕
+        // 連線逾時機制：如果 8 秒後仍然處於「連線中」，主動開啟離線引導
         const connectionTimeout = setTimeout(() => {
             if (!currentUser && !isOfflineMode) {
                 const timeoutPanel = document.getElementById('timeout-retry-panel');
@@ -507,9 +578,9 @@
             }
         }, 8000);
 
-        // 初始化安全認證 (遵照 Rule 3: 優先進行認證)
+        // 初始化認證 (遵照 Rule 3)
         const initAuth = async () => {
-            if (isOfflineMode || firebaseConfig.apiKey === "AIzaSyDummyKeyForInitializationOnly") {
+            if (isOfflineMode) {
                 enableOfflineFallback();
                 return;
             }
@@ -520,7 +591,7 @@
                     await signInAnonymously(auth);
                 }
             } catch (err) {
-                console.warn("無法取得雲端授權，自動降級為本地資料庫：", err);
+                console.warn("認證失敗，自動降級為本地：", err);
                 enableOfflineFallback();
             }
         };
@@ -528,23 +599,22 @@
         initAuth();
 
         // 監聽連線與授權狀態
-        if (auth) {
+        if (auth && !isOfflineMode) {
             onAuthStateChanged(auth, (user) => {
                 if (user && !isOfflineMode) {
                     clearTimeout(connectionTimeout);
                     currentUser = user;
                     
-                    // 隱藏逾時面板
                     const timeoutPanel = document.getElementById('timeout-retry-panel');
                     if (timeoutPanel) timeoutPanel.classList.add('hidden');
 
-                    // 更新狀態 UI
+                    // 更新連線狀態
                     const dot = document.getElementById('sync-status-dot');
                     const txt = document.getElementById('sync-status-text');
                     if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-green-500 shadow-lg shadow-green-500/50";
-                    if (txt) txt.innerText = "雲端已連線";
+                    if (txt) txt.innerText = "雲端同步模式";
 
-                    // 開始訂閱雲端資料庫 (遵照 Rule 1: 嚴格公用路徑規格)
+                    // 訂閱雲端資料
                     const charactersQuery = query(
                         collection(db, 'artifacts', appId, 'public', 'data', 'characters')
                     );
@@ -557,7 +627,6 @@
                         
                         characters = loadedData;
                         
-                        // 關閉骨架屏，顯現真實網格
                         document.getElementById('cloud-loading').classList.add('hidden');
                         document.getElementById('character-grid').classList.remove('hidden');
 
@@ -565,7 +634,7 @@
                         renderGallery();
                         renderTags();
                     }, (error) => {
-                        console.error("監聽雲端資料錯誤，改採本地運行模式", error);
+                        console.error("訂閱失敗", error);
                         enableOfflineFallback();
                     });
 
@@ -576,13 +645,12 @@
         }
 
         // ==========================================
-        // 【核心救援功能：本地離線替代模式】
+        // 【切換至本機儲存模式】
         // ==========================================
         window.enableOfflineFallback = function() {
             isOfflineMode = true;
             clearTimeout(connectionTimeout);
 
-            // 更新 UI 狀態
             const dot = document.getElementById('sync-status-dot');
             const txt = document.getElementById('sync-status-text');
             if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-lg shadow-yellow-500/50 animate-pulse";
@@ -592,10 +660,10 @@
             if (timeoutPanel) timeoutPanel.classList.add('hidden');
 
             const modalTitle = document.getElementById('modal-title');
-            if (modalTitle) modalTitle.innerHTML = `<i class="fa-solid fa-laptop"></i> 新增本地角色`;
+            if (modalTitle) modalTitle.innerHTML = `<i class="fa-solid fa-laptop"></i> 新增本機角色`;
 
             // 讀取 LocalStorage
-            const LOCAL_STORAGE_KEY = 'offline_anime_gallery';
+            const LOCAL_STORAGE_KEY = 'offline_anime_gallery_data';
             const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
             if (saved) {
                 try {
@@ -608,7 +676,6 @@
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(characters));
             }
 
-            // 渲染主畫面
             document.getElementById('cloud-loading').classList.add('hidden');
             document.getElementById('character-grid').classList.remove('hidden');
             
@@ -616,33 +683,34 @@
             renderGallery();
             renderTags();
 
-            showToast("💡 系統已自動切換至「本機儲存模式」，資料將儲存在您的手機/電腦瀏覽器中！", "info");
+            showToast("💡 系統已切換至「本機儲存模式」，資料將直接儲存在當前手機/電腦中！", "info");
         };
 
-        // 雲端資料庫範本寫入
+        // 一鍵寫入官方範例
         window.seedCloudDemoData = async function() {
             if (isOfflineMode) {
-                // 離線模式重置為 demo
                 characters = [...demoCharacters];
-                localStorage.setItem('offline_anime_gallery', JSON.stringify(characters));
+                localStorage.setItem('offline_anime_gallery_data', JSON.stringify(characters));
                 updateStats();
                 renderGallery();
                 renderTags();
-                showToast("✨ 本地冒險者檔案已重置完畢！", "success");
+                showToast("✨ 本地角色已成功重置與還原！", "success");
                 return;
             }
 
             if (!currentUser) return;
-            showToast("🌌 正在施法寫入初始次元範本至雲端庫...", "info");
+            showToast("🌌 正在與雲端同步寫入初始範本...", "info");
             
             try {
                 for (let char of demoCharacters) {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'characters'), char);
+                    // 排除內置硬編碼的 ID 以免與 Cloud 衝突
+                    const { id, ...cloudChar } = char;
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'characters'), cloudChar);
                 }
-                showToast("✨ 4位推薦冒險者已成功儲存至雲端！", "success");
+                showToast("✨ 4位推薦冒險者已成功寫入雲端！", "success");
             } catch (err) {
-                console.error("寫入初始範本錯誤", err);
-                showToast("❌ 寫入雲端失敗！", "error");
+                console.error("寫入錯誤", err);
+                showToast("❌ 雲端存取失敗！", "error");
             }
         };
 
@@ -727,18 +795,13 @@
             }
         }
 
-        // 修改：加入安全防護（Null Check），以確保找不到 DOM 元素時不報錯
         function updateStats() {
             const totalEl = document.getElementById('stat-total');
-            if (totalEl) {
-                totalEl.innerText = characters.length;
-            }
+            if (totalEl) totalEl.innerText = characters.length;
             
             const ssrCount = characters.filter(c => c.rarity === "6").length;
             const ssrEl = document.getElementById('stat-ssr');
-            if (ssrEl) {
-                ssrEl.innerText = ssrCount;
-            }
+            if (ssrEl) ssrEl.innerText = ssrCount;
         }
 
         window.renderTags = function() {
@@ -774,7 +837,7 @@
             renderGallery();
         };
 
-        // 編輯彈窗控制
+        // 編輯面板控制
         window.openAddModal = function(charId = null) {
             const modal = document.getElementById('add-modal');
             const title = document.getElementById('modal-title');
@@ -958,7 +1021,7 @@
             loading.classList.add('hidden');
         };
 
-        // 【同步至 Firestore 雲端資料庫 或 LocalStorage】
+        // 保存資料 (同步至 Firestore 雲端資料庫 或 LocalStorage)
         window.saveCharacter = async function(event) {
             event.preventDefault();
 
@@ -995,7 +1058,7 @@
                     const idx = characters.findIndex(c => c.id === charId);
                     if (idx !== -1) {
                         characters[idx] = { id: charId, ...charData };
-                        showToast(`📝 本地冒險者「${name}」檔案已更新！`, "success");
+                        showToast(`📝 本地檔案「${name}」更新成功！`, "success");
                     }
                 } else {
                     const newChar = {
@@ -1003,9 +1066,9 @@
                         ...charData
                     };
                     characters.unshift(newChar);
-                    showToast(`🎉 成功新增本地角色「${name}」！`, "success");
+                    showToast(`🎉 成功新增角色「${name}」！`, "success");
                 }
-                localStorage.setItem('offline_anime_gallery', JSON.stringify(characters));
+                localStorage.setItem('offline_anime_gallery_data', JSON.stringify(characters));
                 updateStats();
                 renderGallery();
                 renderTags();
@@ -1025,12 +1088,10 @@
 
             try {
                 if (charId) {
-                    // 更新 (Rule 1 規格路徑)
                     const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'characters', charId);
                     await updateDoc(docRef, charData);
                     showToast(`📝 冒險者「${name}」已在雲端同步更新！`, "success");
                 } else {
-                    // 新建 (Rule 1 規格路徑)
                     const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'characters');
                     await addDoc(collectionRef, charData);
                     showToast(`🎉 成功將「${name}」召喚寫入雲端！`, "success");
@@ -1080,7 +1141,7 @@
             };
 
             document.getElementById('btn-delete').onclick = function() {
-                deleteCharacter(char.id, char.name);
+                openDeleteConfirmModal(char.id, char.name);
             };
 
             document.getElementById('detail-modal').classList.remove('hidden');
@@ -1092,33 +1153,105 @@
             document.body.style.overflow = '';
         };
 
-        // 雲端/本地 刪除
-        window.deleteCharacter = async function(charId, name) {
-            if (confirm(`您確定要將冒險者「${name}」遣返嗎？此動作將永久移除其資料。`)) {
-                // 本地刪除
-                if (isOfflineMode) {
-                    characters = characters.filter(c => c.id !== charId);
-                    localStorage.setItem('offline_anime_gallery', JSON.stringify(characters));
-                    closeDetailModal();
-                    updateStats();
-                    renderGallery();
-                    renderTags();
-                    showToast(`🗑️ 已成功將「${name}」自本機卸載。`, "info");
+        // ==========================================
+        // 【自訂安全刪除確定彈窗邏輯】 (取代 alert / confirm)
+        // ==========================================
+        window.openDeleteConfirmModal = function(charId, name) {
+            pendingDeleteId = charId;
+            const confirmText = document.getElementById('delete-confirm-text');
+            if (confirmText) {
+                confirmText.innerText = `確定要將冒險者「${name}」遣返嗎？此動作將永久抹除其圖鑑資料。`;
+            }
+            document.getElementById('delete-confirm-modal').classList.remove('hidden');
+        };
+
+        window.closeDeleteConfirmModal = function() {
+            document.getElementById('delete-confirm-modal').classList.add('hidden');
+            pendingDeleteId = null;
+        };
+
+        // 執行刪除
+        window.executeDelete = async function() {
+            if (!pendingDeleteId) return;
+
+            const charId = pendingDeleteId;
+            const char = characters.find(c => c.id === charId);
+            const name = char ? char.name : "未知角色";
+
+            // 本地刪除
+            if (isOfflineMode) {
+                characters = characters.filter(c => c.id !== charId);
+                localStorage.setItem('offline_anime_gallery_data', JSON.stringify(characters));
+                closeDeleteConfirmModal();
+                closeDetailModal();
+                updateStats();
+                renderGallery();
+                renderTags();
+                showToast(`🗑️ 已成功將冒險者「${name}」遣返。`, "info");
+                return;
+            }
+
+            // 雲端刪除
+            showToast("🗑️ 正在從雲端卸載...", "info");
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'characters', charId);
+                await deleteDoc(docRef);
+                closeDeleteConfirmModal();
+                closeDetailModal();
+                showToast(`🗑️ 已成功將冒險者「${name}」從雲端卸載。`, "info");
+            } catch (err) {
+                console.error("雲端刪除失敗", err);
+                showToast("❌ 雲端刪除失敗！", "error");
+                closeDeleteConfirmModal();
+            }
+        };
+
+        // ==========================================
+        // 【新增：手動雲端連接配置控制邏輯】
+        // ==========================================
+        window.openCloudConfigModal = function() {
+            const inputField = document.getElementById('firebase-json-input');
+            const savedConfig = localStorage.getItem('user_firebase_config_data');
+            if (savedConfig && inputField) {
+                inputField.value = JSON.stringify(JSON.parse(savedConfig), null, 2);
+            }
+            document.getElementById('cloud-config-modal').classList.remove('hidden');
+        };
+
+        window.closeCloudConfigModal = function() {
+            document.getElementById('cloud-config-modal').classList.add('hidden');
+        };
+
+        // 保存手動貼入的雲端配置
+        window.saveCustomCloudConfig = function() {
+            const val = document.getElementById('firebase-json-input').value.trim();
+            if (!val) {
+                showToast("⚠️ 請貼上正確的 JSON 設定代碼！", "warning");
+                return;
+            }
+            try {
+                const parsed = JSON.parse(val);
+                if (!parsed.apiKey) {
+                    showToast("⚠️ 設定代碼格式不完整，缺少 apiKey 欄位！", "warning");
                     return;
                 }
-
-                // 雲端刪除
-                showToast("🗑️ 正在從雲端卸載...", "info");
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'characters', charId);
-                    await deleteDoc(docRef);
-                    closeDetailModal();
-                    showToast(`🗑️ 已成功自雲端卸載冒險者「${name}」。`, "info");
-                } catch (err) {
-                    console.error("雲端刪除失敗", err);
-                    showToast("❌ 雲端刪除發生錯誤！", "error");
-                }
+                localStorage.setItem('user_firebase_config_data', JSON.stringify(parsed));
+                showToast("✨ 雲端連線設定已保存，網頁將自動重新連線！", "success");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } catch (e) {
+                showToast("❌ 無法解析該代碼，請確認是否為合法的 JSON 格式！", "error");
             }
+        };
+
+        // 清除自訂雲端回到本地
+        window.clearCustomCloudConfig = function() {
+            localStorage.removeItem('user_firebase_config_data');
+            showToast("🧹 已重設為本機離線儲存！網頁即將重啟...", "info");
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
         };
 
         // 浮動提示 Toast
